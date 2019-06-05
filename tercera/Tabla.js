@@ -17,4 +17,21 @@ export default class Tabla {
             this._addToTable(new Tarea(e));
         })
     }
+    _addToTable(Tarea){
+        let row = this._tableLista.insertRow(-1);
+        let cellnombre = row.insertCell(0);
+        let celllimite = row.insertCell(1);
+
+        cellnombre.innerHTML = tarea.nombre
+        celllimite.innerHTML = tarea.getlimiteString();
+         
+        this._cantTareas++;
+        this.tableInfo.row[0].cells[1].innerHTML = this._cantTareas;
+
+        let objTa={
+            nombre: tarea.nombre,
+            limite: tarea.limite
+        };
+        this._tareas.push(objTa);
+    }
 }
