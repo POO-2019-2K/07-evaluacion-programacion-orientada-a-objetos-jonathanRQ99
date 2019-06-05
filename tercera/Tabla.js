@@ -34,4 +34,8 @@ export default class Tabla {
         };
         this._tareas.push(objTa);
     }
+    addTall(tarea){
+        this._addToTable(tarea);
+        localStorage.setItem("tareas", JSON.stringify(this._tareas));
+    }
 }
