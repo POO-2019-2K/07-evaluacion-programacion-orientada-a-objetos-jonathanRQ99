@@ -3,22 +3,24 @@ import Tarea from "./Tarea.js";
 
 class Main {
     constructor(){
-        let lista = new Tabla(
+        this._lista = new Tabla(
             document.querySelector("#lista")
         );
         document.querySelector("#btnAdd").addEventListener("click", () => {
-            let from = document.querySelector("#form");
-            if (Form.checkVality() === true){
-              let nombre = document.querySelector("#nombre").Value;
-              let fechalimite = document.querySelector("#limite").Value; 
+             let nombre = document.querySelector("#nombre").Value;
+            let limite = document.querySelector("#limite").Value; 
+            limite = limite.split('-');
+
+            let limite = new Date(limite[0], limite[1], limite[2]);
 
               let objtarea ={
                   nombre: nombre,
                   limite: limite
               }
+
               let tarea = new Tarea(objtarea);
               lista.addTall(tarea)
-            }
+            
             form.classList.add("was-validated");
         })
     }

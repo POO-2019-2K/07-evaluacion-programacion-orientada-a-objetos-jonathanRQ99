@@ -33,4 +33,10 @@ export default class Tarea {
         return date  
     }
 
+    getAge(){
+        let oneDay = (24 * 60 * 60 * 1000);
+        let differenceMs = Math.abs(this._limite - new Date());
+        return Math.round(diferrenceMs / oneDay) + 1;
+    }
+
 }
