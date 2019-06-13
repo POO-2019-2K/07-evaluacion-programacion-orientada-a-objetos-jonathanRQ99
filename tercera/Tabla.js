@@ -2,48 +2,68 @@ import Tarea from "./Tarea.js";
 
 
 export default class Tabla {
-    constructor(tableLista){
-        this._tableLista = tableLista;
+    constructor(tableAgenda){
+        this._tableAgenda = tableAgenda;
         this._cantTareas = 0;
         this._tareas = [];
         this._initTable();
     }
 
     _initTable(){
-        let lstareas = JSON.parse(localStorage.getItem("tareas"));
-        if(!lstareas){
+        let lstarea = JSON.parse(localStorage.getItem("tarea"));
+        if(!lstarea){
             return;
         }
-        lstareas.forEach((tareas, index)=> {
+        lstarea.forEach((tarea, index)=> {
             console.log(tareas) 
             tarea.limite = new Date (tarea.limite);
             this._addToTable(new Tarea(tareas));
         })
     }
-    _addToTable(tarea){
-        let row = this._tableLista.insertRow(-1);
-        let cellnombre = row.insertCell(0);
-        let celllimite = row.insertCell(1);
 
-        cellnombre.innerHTML = tarea.nombre
-        celllimite.innerHTML = tarea.getlimiteString();
+    addEmployee2(tarea) {
+        let found = this._findId(tarea.nombre);
+        if (found >= 0){
+            swal.fire({
+                type: "error",
+                tittle: "error",
+                text: "esta tarea ya esta registrada"
+            });
+            return;
+        }
+        this._addContacto(tarea);
+        localStorage.setItem("tarea", JSON.stringify(this._tarea));
+        console.log(localStorage.getItem("tarea"));
+    }
+
+    _addUsuario(tarea) {
+        let row = this._tableAgenda.insertRow(-1);
+        let cellTarea = row.insertCell(0);
+        let cellfinal = row.insertCell(1);
+        let cellDif = row.insertCell(2);
+        row.insertCell(3);
+        row.insertCell(4);
+
+
+        cellTarea.innerHTML = tarea.nombre;
+        cellfinal.innerHTML = tarea.getFinalAsString();
+        cellDif.innerHTML = tarea.getAge();
         this._addEditDeleteToRow(row, tarea);
-         
-        this._cantTareas++;
-        this.tableInfo.row[0].cells[1].innerHTML = this._cantTareas;
 
-        let objTa={
+
+        let objTarea = {
             nombre: tarea.nombre,
             limite: tarea.limite
-        };
-        this._tareas.push(objTa);
+        }
+        this._tarea.push(objTarea);
+        localStorage.setItem("tarea", JSON.stringify(this._tarea));
     }
-    addTall(tarea){
-        this._addToTable(tarea);
-        localStorage.setItem("tareas", JSON.stringify(this._tareas));
+    addTall(nombre){
+        this._addToTable(nombre);
+        localStorage.setItem("tarea", JSON.stringify(this._tarea));
     }
 
-    _editRow(row, tareas) {
+    _editRow(row, tarea) {
 
         let iTarea = document.createElement('input');
         iTarea.type = 'text';
@@ -58,13 +78,13 @@ export default class Tabla {
         btnSave.value = 'Guardar';
         btnSave.className = "btn btn-success";
         btnSave.addEventListener('click', () => {
-            let newTabla = {
+            let newTarea = {
                 tarea: iTarea.value,
                 limite: iDate.value,
 
             };
 
-            this._saveEdit(row, tareas, newTabla);
+            this._saveEdit(row, tarea, newTarea);
         });
 
         let btnCancel = document.createElement('input');
@@ -72,7 +92,7 @@ export default class Tabla {
         btnCancel.value = 'Cancelar';
         btnCancel.className = "btn btn-danger";
         btnCancel.addEventListener('click', () => {
-            this._cancelEdit(row, tareas);
+            this._cancelEdit(row, tarea);
         });
 
 
@@ -84,5 +104,21 @@ export default class Tabla {
         row.cells[4].appendChild(btnSave);
         row.cells[5].innerHTML = '';
         row.cells[5].appendChild(btnCancel);
+    }
+
+    _saveEdit(row, tarea, newTarea) {
+        let pos = this._findId(tarea.num);
+        this._actividades[pos] = newTarea;
+        localStorage.setItem('tarea', JSON.stringify(this._tarea));
+        this._cancelEdit(row, new Tarea(newTarea));
+    }
+
+    _cancelEdit(row, tarea) {
+        row.cells[1].innerHTML = tarea.nombre;
+        row.cells[2].innerHTML = tarea.getFechaForDate();
+        row.cells[3].innerHTML = tarea.getAge();
+        row.cells[4].innerHTML = "";
+        row.cells[5].innerHTML = "";
+        this._addEditDeleteToRow(row, tarea);
     }
 }

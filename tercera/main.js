@@ -3,15 +3,16 @@ import Tarea from "./Tarea.js";
 
 class Main {
     constructor(){
-        this._lista = new Tabla(
-            document.querySelector("#lista")
+        this._agenda = new Tabla(
+            document.querySelector("#agenda")
         );
         document.querySelector("#btnAdd").addEventListener("click", () => {
              let nombre = document.querySelector("#nombre").Value;
-            let limite = document.querySelector("#limite").Value; 
-            limite = limite.split('-');
+            let slimite = document.querySelector("#limite").Value; 
+            slimite = slimite.split('-')
+        
 
-            let limite = new Date(limite[0], limite[1], limite[2]);
+            let limite = new Date(slimite[0], slimite[1]-1, slimite[2]);
 
               let objtarea ={
                   nombre: nombre,
@@ -20,9 +21,11 @@ class Main {
 
               let tarea = new Tarea(objtarea);
               lista.addTall(tarea)
+
+              this._agenda.addEmployee2(tarea);
             
             form.classList.add("was-validated");
         })
     }
 }
-let m =new Main();
+let m = new Main();
