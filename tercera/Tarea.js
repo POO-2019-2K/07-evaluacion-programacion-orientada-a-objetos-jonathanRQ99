@@ -1,7 +1,7 @@
 export default class Tarea {
     constructor(tarea) {
         this._nombre = tarea.nombre.toUpperCase();
-        this._limite = tarea._limite;
+        this._limite = tarea.limite;
         this._months = [
             "Ene",
             "Feb",
